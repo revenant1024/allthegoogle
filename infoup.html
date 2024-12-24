@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정보 업로드</title>
+    <style>
+        /* 기본 스타일 초기화 */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fbfbfb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* 업로드 창 스타일 */
+.upload-container {
+    width: 800px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+/* 제목 및 카테고리 선택 */
+.title-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.category-select {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.title-input {
+    flex: 3;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* 툴바 */
+.toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.toolbar button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    cursor: pointer;
+}
+
+.toolbar button:hover {
+    background-color: #e0e0e0;
+}
+
+/* 본문 입력 */
+.content-input {
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    resize: none;
+}
+
+/* 파일 업로드 */
+.file-upload-section {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.file-upload-section label {
+    font-weight: bold;
+}
+
+.file-upload-section input {
+    border: none;
+}
+
+/* SNS 가져오기 */
+.sns-import {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sns-button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.sns-button:hover {
+    background-color: #0056b3;
+}
+
+/* 업로드 버튼 */
+.submit-section {
+    text-align: right;
+}
+
+.submit-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #218838;
+}
+
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <!-- 제목 입력 -->
+        <div class="title-section">
+            <select class="category-select">
+                <option value="" disabled selected>카테고리</option>
+                <option value="AI">AI</option>
+                <option value="취업">취업</option>
+                <option value="창업">창업</option>
+                <option value="프리랜서">프리랜서</option>
+                <option value="디지털노마드">디지털노마드</option>
+            </select>
+            <input type="text" class="title-input" placeholder="제목을 입력하세요">
+        </div>
+
+        <!-- 툴바 -->
+        <div class="toolbar">
+            <button><b>B</b></button>
+            <button><i>I</i></button>
+            <button><u>U</u></button>
+            <button>Text Size</button>
+            <button>Align</button>
+            <button>Add Link</button>
+            <button>Emoji</button>
+        </div>
+
+        <!-- 본문 입력 -->
+        <textarea class="content-input" placeholder="내용을 입력하세요"></textarea>
+
+        <!-- 파일 업로드 섹션 -->
+        <div class="file-upload-section">
+            <label for="image-upload">사진 업로드</label>
+            <input type="file" id="image-upload" accept="image/*">
+            <label for="video-upload">영상 업로드</label>
+            <input type="file" id="video-upload" accept="video/*">
+        </div>
+
+        <!-- SNS 가져오기 -->
+        <div class="sns-import">
+            <button class="sns-button">SNS에서 가져오기</button>
+        </div>
+
+        <!-- 업로드 버튼 -->
+        <div class="submit-section">
+            <button class="submit-button">업로드</button>
+        </div>
+    </div>
+</body>
+</html>

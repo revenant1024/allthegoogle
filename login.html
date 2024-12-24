@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        /* 전체 스타일 초기화 */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f6f5f7;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            background-color: #ffffff;
+            width: 900px;
+            height: 600px;
+            border-radius: 10px;
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 
+                        0 10px 10px rgba(0, 0, 0, 0.22);
+            overflow: hidden;
+        }
+
+        /* 로그인 섹션 */
+        .form-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 50px;
+        }
+
+        h1 {
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .social-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .social {
+            height: 40px;
+            width: 40px;
+            margin: 0 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f6f5f7;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .social img {
+            width: 20px;
+            height: 20px;
+        }
+
+        span {
+            font-size: 14px;
+            color: #999;
+        }
+
+        input {
+            margin: 10px 0;
+            padding: 12px 15px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 16px;
+        }
+
+        button {
+            border-radius: 20px;
+            border: 1px solid #ff4b2b;
+            background-color: #ff4b2b;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 12px 45px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #e60023;
+            transform: scale(1.05);
+        }
+
+        /* 오른쪽 패널 */
+        .overlay-container {
+            flex: 1;
+            background-color: #ff4b2b;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 50px;
+        }
+
+        .overlay-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .overlay-panel h1 {
+            font-weight: bold;
+            margin: 0 0 20px;
+        }
+
+        .overlay-panel p {
+            font-size: 16px;
+            margin: 20px 0;
+        }
+
+        .btn-secondary {
+            background-color: #ffffff;
+            border: none;
+            color: #ff4b2b;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 12px 45px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f2f2f2;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 로그인 섹션 -->
+        <div class="form-container sign-in-container">
+            <form id="login-form">
+                <h1>Sign In</h1>
+                <div class="social-container">
+                    <!-- 구글 로그인 버튼 -->
+                    <a href="/auth/google" class="social"><img src="google.png" alt="Google"></a>
+                    <!-- 네이버 로그인 버튼 -->
+                    <a href="/auth/naver" class="social"><img src="naver.png" alt="Naver"></a>
+                    <!-- 카카오 로그인 버튼 -->
+                    <a href="/auth/kakao" class="social"><img src="kakaotalk.png" alt="KakaoTalk"></a>
+                </div>
+                <span>or use your account</span>
+                <input type="email" id="username" placeholder="Email" required />
+                <input type="password" id="password" placeholder="Password" required />
+                <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+        </div>
+        <!-- 오른쪽 패널 -->
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-right">
+                    <h1>ALL THE</h1>
+                    <p>올디와 함께 해주셔서 감사합니다.</p>
+                    <button class="btn-secondary" onclick="location.href='signup.html';" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK 및 로그인 기능 -->
+    <script type="module">
+        // Firebase 설정 가져오기
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCzL5e1dHNm0ivo-lA9bU1Ao5ZIx6QRR-s",
+            authDomain: "allthelog.firebaseapp.com",
+            projectId: "allthelog",
+            storageBucket: "allthelog.firebasestorage.app",
+            messagingSenderId: "856501539955",
+            appId: "1:856501539955:web:7aaf5840b4da14c7bf4606",
+            measurementId: "G-X6NQ71CBT7"
+        };
+
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // 로그인 폼 제출 이벤트 처리
+        document.getElementById("login-form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const email = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // Firebase를 통한 로그인 처리
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("로그인 성공!");
+                    window.location.href = "mypage.html"; // 로그인 성공 후 페이지 이동
+                })
+                .catch((error) => {
+                    alert(`로그인 실패: ${error.message}`);
+                });
+        });
+    </script>
+</body>
+</html>

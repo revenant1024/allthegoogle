@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>채팅방 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f6f6f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #chat-room-list-container {
+            width: 90%;
+            max-width: 1000px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        header button {
+            background: white;
+            color: #007bff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        header button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        #chat-room-list {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-room-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .chat-room-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-room-info {
+            flex: 1;
+        }
+
+        .chat-room-info h2 {
+            margin: 0 0 5px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .chat-room-info p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .join-room-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .join-room-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-room-list-container">
+        <header>
+            <h1>채팅방 목록</h1>
+            <button id="backButton" onclick="goBack()">뒤로가기</button>
+        </header>
+        <div id="chat-room-list">
+            <!-- 채팅방 카드가 동적으로 추가됩니다 -->
+        </div>
+    </div>
+    <script>
+        const chatRoomList = document.getElementById("chat-room-list");
+
+        // 더미 데이터
+        const chatRooms = [
+            { name: "AI 기술 토론방", currentUsers: 5, maxUsers: 10, category: "기술" },
+            { name: "프리랜서 프로젝트 공유", currentUsers: 3, maxUsers: 5, category: "프리랜서" },
+            { name: "창업 아이디어 토론", currentUsers: 8, maxUsers: 10, category: "창업" },
+            { name: "디지털 노마드 여행기", currentUsers: 2, maxUsers: 5, category: "여행" },
+            { name: "업무 생산성 팁 공유", currentUsers: 4, maxUsers: 10, category: "생산성" },
+            { name: "취업 팁 및 인터뷰", currentUsers: 6, maxUsers: 10, category: "취업" },
+            { name: "게임 커뮤니티", currentUsers: 10, maxUsers: 10, category: "게임" },
+        ];
+
+        // 채팅방 목록 렌더링
+        function renderChatRooms() {
+            chatRooms.forEach((room) => {
+                const card = document.createElement("div");
+                card.classList.add("chat-room-card");
+
+                const roomInfo = document.createElement("div");
+                roomInfo.classList.add("chat-room-info");
+                roomInfo.innerHTML = `
+                    <h2>${room.name}</h2>
+                    <p>참여 인원: ${room.currentUsers}/${room.maxUsers}</p>
+                    <p>카테고리: ${room.category}</p>
+                `;
+
+                const joinButton = document.createElement("button");
+                joinButton.classList.add("join-room-button");
+                joinButton.textContent = "참여하기";
+                joinButton.addEventListener("click", () => {
+                    window.location.href = "chat.html"; // chat.html로 이동
+                });
+
+                card.appendChild(roomInfo);
+                card.appendChild(joinButton);
+                chatRoomList.appendChild(card);
+            });
+        }
+
+        // 뒤로가기 버튼
+        function goBack() {
+            window.location.href = "/"; // 홈 화면으로 이동
+        }
+
+        // 페이지 로드 시 채팅방 목록 렌더링
+        renderChatRooms();
+    </script>
+</body>
+</html>

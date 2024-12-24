@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상세 정보</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+
+        .detail-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .detail-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .detail-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .detail-author-date {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .detail-content {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="detail-container" id="detailContainer">
+        <!-- 상세 정보가 동적으로 추가됩니다 -->
+    </div>
+
+    <script>
+        // 더미 데이터 (목록 페이지와 동일)
+        const dummyData = [
+            {
+                id: 1,
+                image: "https://via.placeholder.com/300x150",
+                title: "AI 혁신의 시작",
+                category: "AI",
+                content: "AI 기술이 우리의 삶을 혁신하고 있습니다.",
+                likes: 120,
+                recommendations: 45,
+                clicks: 300,
+                comments: 12
+            },
+            {
+                id: 2,
+                image: "https://via.placeholder.com/300x150",
+                title: "취업 성공 비결",
+                category: "취업",
+                content: "취업 준비생을 위한 유용한 팁을 확인하세요.",
+                likes: 90,
+                recommendations: 30,
+                clicks: 250,
+                comments: 8
+            },
+            {
+                id: 3,
+                image: "https://via.placeholder.com/300x150",
+                title: "창업 아이디어",
+                category: "창업",
+                content: "새로운 비즈니스를 위한 창업 아이디어를 확인하세요.",
+                likes: 60,
+                recommendations: 20,
+                clicks: 150,
+                comments: 5
+            }
+        ];
+
+        // URL에서 ID 가져오기
+        const urlParams = new URLSearchParams(window.location.search);
+        const infoId = parseInt(urlParams.get("id"));
+
+        const detailContainer = document.getElementById("detailContainer");
+
+        // 데이터 상세 렌더링
+        function renderDetail() {
+            const item = dummyData.find(d => d.id === infoId);
+            if (item) {
+                detailContainer.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}">
+                    <div class="detail-title">${item.title}</div>
+                    <div class="detail-author-date">${item.category} | 추천수: ${item.recommendations}</div>
+                    <div class="detail-content">${item.content}</div>
+                `;
+            } else {
+                detailContainer.innerHTML = `<p>정보를 찾을 수 없습니다.</p>`;
+            }
+        }
+
+        renderDetail();
+    </script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engines</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .search-bar button {
+            padding: 10px 15px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #6d5dfc;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-engine {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .engine-button {
+            position: relative;
+            background-color: #6d5dfc;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        .engine-button:hover {
+            background-color: #5b0eeb;
+        }
+
+        .engine-button:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Search Engines</h1>
+            <p>"Which search engine do you think is the best?<br>
+                If you have additional engines to suggest, please leave them in the comments below!"</p>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" id="searchQuery" placeholder="Enter your search term...">
+        </div>
+
+        <div class="search-engine">
+            <!-- Global Search Engines -->
+            <a href="#" class="engine-button" onclick="performSearch('https://www.google.com/search?q=')">
+                Google
+                <span class="tooltip">The most widely used search engine with extensive web index and integrated services.</span>
+            </a>
+            <a href="#" class="engine-button" onclick="performSearch('https://www.bing.com/search?q=')">
+                Bing
+                <span class="tooltip">Known for visual and image search, integrated with Microsoft products.</span>
+            </a>
+            <a href="#" class="engine-button" onclick="performSearch('https://search.yahoo.com/search?p=')">
+                Yahoo
+                <span class="tooltip">A blend of search engine and news portal with email services.</span>
+            </a>
+            <a href="#" class="engine-button" onclick="performSearch('https://duckduckgo.com/?q=')">
+                DuckDuckGo
+                <span class="tooltip">Focuses on privacy with no tracking and a clean interface.</span>
+            </a>
+            <a href="#" class="engine-button" onclick="performSearch('https://www.ecosia.org/search?q=')">
+                Ecosia
+                <span class="tooltip">Uses search revenue to plant trees and protect the environment.</span>
+            </a>
+
+            <!-- Regional Search Engines -->
+            <a href="#" class="engine-button" onclick="performSearch('https://search.naver.com/search.naver?query=')">
+                Naver
+                <span class="tooltip">Popular in South Korea, offering blogs, news, and cafes.</span>
+            </a>
+            <a href="#" class="engine-button" onclick="performSearch('https://search.daum.net/search?w=tot&q=')">
+                Daum
+                <span class="tooltip">Integrated with Kakao services, popular in South Korea.</span>
+            </a>
+            <a href="#" class="engine-button" onclick="performSearch('https://www.baidu.com/s?wd=')">
+                Baidu
+                <span class="tooltip">China's largest search engine with local market dominance.</span>
+            </a>
+            <a href="#" class="engine-button" onclick="performSearch('https://yandex.com/search/?text=')">
+                Yandex
+                <span class="tooltip">Russia's Google equivalent with maps and email services.</span>
+            </a>
+            <a href="#" class="engine-button" onclick="performSearch('https://search.seznam.cz/?q=')">
+                Seznam
+                <span class="tooltip">Czech Republic's favorite search engine with localized services.</span>
+            </a>
+
+            <!-- Specialized Search Engines -->
+            <a href="#" class="engine-button" onclick="performSearch('https://www.wolframalpha.com/input/?i=')">
+                Wolfram Alpha
+                <span class="tooltip">Offers specialized knowledge in math, science, and data analysis.</span>
+            </a>
+            <a href="#" class="engine-button" onclick="performSearch('https://archive.org/search.php?query=')">
+                Archive.org
+                <span class="tooltip">Digital archive of old websites, videos, and music.</span>
+            </a>
+            <a href="#" class="engine-button" onclick="performSearch('https://pubmed.ncbi.nlm.nih.gov/?term=')">
+                PubMed
+                <span class="tooltip">Search for medical and life science research papers.</span>
+            </a>
+            <a href="#" class="engine-button" onclick="performSearch('https://www.youtube.com/results?search_query=')">
+                YouTube
+                <span class="tooltip">The world's largest platform for video content.</span>
+            </a>
+
+            <!-- Other Search Engines -->
+            <a href="#" class="engine-button" onclick="performSearch('https://www.ask.com/web?q=')">
+                Ask.com
+                <span class="tooltip">Provides answers to simple questions in a user-friendly format.</span>
+            </a>
+            <a href="#" class="engine-button" onclick="performSearch('https://www.startpage.com/do/dsearch?query=')">
+                Startpage
+                <span class="tooltip">Displays Google results while maintaining anonymity.</span>
+            </a>
+            <a href="#" class="engine-button" onclick="performSearch('https://www.qwant.com/?q=')">
+                Qwant
+                <span class="tooltip">Popular in Europe for privacy-focused search results.</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function performSearch(baseUrl) {
+            const query = document.getElementById('searchQuery').value;
+            if (!query) {
+                alert('Please enter a search term.');
+                return;
+            }
+            window.open(baseUrl + encodeURIComponent(query), '_blank');
+        }
+    </script>
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://search-engine-debate.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script id="dsq-count-scr" src="//search-engine-debate.disqus.com/count.js" async></script>
+</body>
+<footer style="text-align: center; padding: 20px; background-color: #f1f1f1; font-size: 14px; margin-top: 20px;">
+    <p>&copy; 2024 <a href="https://weallday.netlify.app/" target="_blank" style="text-decoration: none; color: #6d5dfc;">Weallday Company</a>. All rights reserved.</p>
+</footer>
+</html>

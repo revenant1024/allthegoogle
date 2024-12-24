@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>채팅방 개설</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f6f6f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#create-room-container {
+    width: 90%;
+    max-width: 600px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px 10px 0 0;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+header button {
+    background: white;
+    color: #007bff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+header button:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+    <div id="create-room-container">
+        <header>
+            <h1>채팅방 개설</h1>
+            <button id="backButton" onclick="goBack()">뒤로가기</button>
+        </header>
+        <form id="create-room-form">
+            <label for="roomName">채팅방 이름:</label>
+            <input type="text" id="roomName" placeholder="채팅방 이름을 입력하세요" required>
+
+            <label for="maxUsers">최대 인원수:</label>
+            <input type="number" id="maxUsers" min="2" max="50" placeholder="최대 인원수를 입력하세요" required>
+
+            <label for="category">카테고리:</label>
+            <select id="category" required>
+                <option value="" disabled selected>카테고리를 선택하세요</option>
+                <option value="기술">기술</option>
+                <option value="창업">창업</option>
+                <option value="프리랜서">프리랜서</option>
+                <option value="여행">여행</option>
+                <option value="생산성">생산성</option>
+                <option value="취업">취업</option>
+                <option value="게임">게임</option>
+            </select>
+
+            <button type="submit" id="createRoomButton">채팅방 생성</button>
+        </form>
+    </div>
+    <script>
+        // 뒤로가기 버튼
+function goBack() {
+    window.location.href = "/"; // 홈 화면으로 이동
+}
+
+// 채팅방 생성 버튼
+document.getElementById("create-room-form").addEventListener("submit", (event) => {
+    event.preventDefault(); // 폼 기본 동작 막기
+
+    // 입력값 가져오기
+    const roomName = document.getElementById("roomName").value;
+    const maxUsers = document.getElementById("maxUsers").value;
+    const category = document.getElementById("category").value;
+
+    if (!roomName || !maxUsers || !category) {
+        alert("모든 필드를 입력해주세요.");
+        return;
+    }
+
+    // 더미 데이터로 확인
+    const newRoom = {
+        name: roomName,
+        maxUsers: parseInt(maxUsers),
+        category: category,
+        currentUsers: 0, // 방 생성 시 참여자는 0명
+    };
+
+    // 방 데이터 서버로 전송 (백엔드 연동 시 필요)
+    console.log("새 채팅방 생성:", newRoom);
+
+    // 성공 메시지 표시
+    alert(`"${roomName}" 채팅방이 성공적으로 생성되었습니다!`);
+    window.location.href = "/chat-rooms.html"; // 채팅방 목록으로 이동
+});
+
+    </script>
+</body>
+</html>

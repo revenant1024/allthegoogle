@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>업로드된 정보</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+
+        .info-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .info-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .info-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .info-card .content {
+            padding: 15px;
+        }
+
+        .info-card .title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .info-card .author-date {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .info-card .description {
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>업로드된 정보</h1>
+    <div class="info-list" id="infoList">
+        <!-- 업로드된 정보 카드가 동적으로 추가됩니다 -->
+    </div>
+
+    <script>
+        // 데이터 예제
+        const data = [
+            {
+                id: 1,
+                title: "AI 혁신의 시작",
+                content: "AI 기술은 우리의 삶을 혁신하고 있습니다.",
+                image: "https://via.placeholder.com/300x150",
+                author: "김철수",
+                date: "2024-12-03"
+            },
+            {
+                id: 2,
+                title: "취업 성공 전략",
+                content: "취업 준비를 위한 꿀팁을 확인하세요.",
+                image: "https://via.placeholder.com/300x150",
+                author: "이영희",
+                date: "2024-12-01"
+            }
+        ];
+
+        const infoList = document.getElementById("infoList");
+
+        // 데이터 목록 렌더링
+        function renderInfoList() {
+            data.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "info-card";
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}">
+                    <div class="content">
+                        <div class="title">${item.title}</div>
+                        <div class="author-date">${item.author} | ${item.date}</div>
+                        <div class="description">${item.content.substring(0, 50)}...</div>
+                    </div>
+                `;
+                card.addEventListener("click", () => {
+                    window.location.href = `info-detail.html?id=${item.id}`;
+                });
+                infoList.appendChild(card);
+            });
+        }
+
+        renderInfoList();
+    </script>
+</body>
+</html>

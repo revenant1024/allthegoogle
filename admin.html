@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - 관리 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        nav {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .tab-button.active {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Admin 관리 페이지</h1>
+    </header>
+
+    <main>
+        <!-- 탭 메뉴 -->
+        <nav>
+            <button class="tab-button active" data-tab="uploads">업로드 정보 관리</button>
+            <button class="tab-button" data-tab="chat-rooms">아바타 채팅방 관리</button>
+            <button class="tab-button" data-tab="personalization">개인화 페이지 관리</button>
+            <button class="tab-button" data-tab="user-management">회원 정보 관리</button>
+        </nav>
+
+        <!-- 업로드된 정보 관리 -->
+        <section id="uploads" class="tab-content active">
+            <h2>업로드된 정보 관리</h2>
+            <table id="uploadTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>제목</th>
+                        <th>카테고리</th>
+                        <th>내용</th>
+                        <th>액션</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 데이터가 동적으로 추가됩니다 -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 아바타 채팅방 관리 -->
+        <section id="chat-rooms" class="tab-content">
+            <h2>아바타 채팅방 관리</h2>
+            <table id="chatRoomTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>채팅방 이름</th>
+                        <th>참여자 수</th>
+                        <th>상태</th>
+                        <th>액션</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 데이터가 동적으로 추가됩니다 -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 개인화 페이지 관리 -->
+        <section id="personalization" class="tab-content">
+            <h2>개인화 페이지 관리</h2>
+            <table id="userTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>이름</th>
+                        <th>이메일</th>
+                        <th>상태</th>
+                        <th>액션</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 데이터가 동적으로 추가됩니다 -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 회원 정보 관리 -->
+        <section id="user-management" class="tab-content">
+            <h2>회원 정보 관리</h2>
+            <table id="userManagementTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>이름</th>
+                        <th>이메일</th>
+                        <th>로그인 제공자</th>
+                        <th>프로필 사진</th>
+                        <th>액션</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 데이터가 동적으로 추가됩니다 -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script>
+        // 초기 데이터 로드 및 탭 전환 처리
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-button');
+            const contents = document.querySelectorAll('.tab-content');
+
+            // 탭 전환
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
+
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab).classList.add('active');
+
+                    // "회원 정보 관리" 탭 클릭 시 사용자 정보 로드
+                    if (tab.dataset.tab === 'user-management') {
+                        fetchUserManagement();
+                    }
+                });
+            });
+
+            // 초기 데이터 로드
+            fetchUploads();
+            fetchChatRooms();
+        });
+
+        // 회원 정보 가져오기 및 테이블 업데이트
+        function fetchUserManagement() {
+            const userManagementTable = document.getElementById('userManagementTable').querySelector('tbody');
+            userManagementTable.innerHTML = ''; // 기존 데이터 초기화
+
+            fetch('/api/users')
+                .then(res => res.json())
+                .then(users => {
+                    users.forEach(user => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${user.id}</td>
+                            <td>${user.username || 'N/A'}</td>
+                            <td>${user.email || 'N/A'}</td>
+                            <td>${user.provider || 'Local'}</td>
+                            <td>
+                                <img src="${user.profile_picture || '#'}" alt="프로필 사진" width="40" height="40">
+                            </td>
+                            <td>
+                                <button onclick="deleteUser(${user.id})">삭제</button>
+                            </td>
+                        `;
+                        userManagementTable.appendChild(row);
+                    });
+                })
+                .catch(err => {
+                    console.error('Error fetching user data:', err);
+                    alert('사용자 정보를 가져오는 중 오류가 발생했습니다.');
+                });
+        }
+
+        // 사용자 삭제
+        function deleteUser(id) {
+            if (!confirm('정말로 이 사용자를 삭제하시겠습니까?')) return;
+
+            fetch(`/api/users/${id}`, { method: 'DELETE' })
+                .then(res => {
+                    if (res.ok) {
+                        alert('사용자가 삭제되었습니다.');
+                        fetchUserManagement(); // 삭제 후 테이블 업데이트
+                    } else {
+                        throw new Error('삭제 실패');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error deleting user:', err);
+                    alert('사용자 삭제 중 오류가 발생했습니다.');
+                });
+        }
+
+        // 업로드 정보 가져오기 (더미 함수)
+        function fetchUploads() {
+            console.log('Fetching uploads...');
+        }
+
+        // 채팅방 정보 가져오기 (더미 함수)
+        function fetchChatRooms() {
+            console.log('Fetching chat rooms...');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Custom Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #results {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        .result-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .result-item a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 18px;
+        }
+
+        .result-item a:hover {
+            text-decoration: underline;
+        }
+
+        .result-item p {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Google Custom Search</h1>
+    <div>
+        <input type="text" id="search-query" placeholder="Enter search term..." />
+        <button onclick="performSearch()">Search</button>
+    </div>
+    <div id="results"></div>
+
+    <script>
+        const API_KEY = "AIzaSyASf_E2A-_7tvbS-9g6rCSWMghD_sd90bY";
+        const SEARCH_ENGINE_ID = "f54d2f8dee4d64ea5";
+
+        async function performSearch() {
+            const query = document.getElementById("search-query").value;
+            const resultsContainer = document.getElementById("results");
+
+            // 초기화
+            resultsContainer.innerHTML = "<p>Loading...</p>";
+
+            try {
+                // Google Custom Search API URL
+                const url = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(query)}&key=${API_KEY}&cx=${SEARCH_ENGINE_ID}`;
+
+                // API 요청 보내기
+                const response = await fetch(url);
+                const data = await response.json();
+
+                // 결과 출력
+                resultsContainer.innerHTML = ""; // 초기화
+                if (data.items) {
+                    data.items.forEach(item => {
+                        const resultHTML = `
+                            <div class="result-item">
+                                <a href="${item.link}" target="_blank">${item.title}</a>
+                                <p>${item.snippet}</p>
+                            </div>
+                        `;
+                        resultsContainer.innerHTML += resultHTML;
+                    });
+                } else {
+                    resultsContainer.innerHTML = "<p>No results found.</p>";
+                }
+            } catch (error) {
+                console.error("Error fetching search results:", error);
+                resultsContainer.innerHTML = "<p>Failed to fetch search results. Please try again later.</p>";
+            }
+        }
+    </script>
+</body>
+</html>

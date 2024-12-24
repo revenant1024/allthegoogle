@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아바타 채팅방</title>
+  <style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f6f6f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#chat-container {
+    width: 90%;
+    max-width: 1200px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+header {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    padding: 20px;
+    background: #333;
+    height: 300px;
+}
+
+.avatar-tile {
+    background: #444;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 16px;
+    position: relative;
+    overflow: hidden;
+}
+
+.avatar-tile video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.user-name {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+#controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    background: #007bff;
+    padding: 10px;
+}
+
+#controls button {
+    background: white;
+    color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+#controls button:hover {
+    background: #0056b3;
+    color: white;
+}
+
+#chat-section {
+    background: #f9f9f9;
+    border-top: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+}
+
+#chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background: #fff;
+}
+
+#chat-input {
+    display: flex;
+    padding: 10px;
+}
+
+#chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px 0 0 5px;
+}
+
+#chat-input button {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+  </style>
+</head>
+<body>
+    <div id="chat-container">
+        <header>
+            <h1>아바타 채팅방</h1>
+            <button id="leaveRoom">나가기</button>
+        </header>
+        <div id="avatar-grid">
+            <!-- 참가자 비디오가 동적으로 추가됩니다 -->
+        </div>
+        <div id="controls">
+            <button id="toggleMic">🎙️ 마이크 켜기</button>
+            <button id="toggleVideo">📹 비디오 켜기</button>
+            <button id="shareScreen">🖥️ 화면 공유</button>
+            <button id="uploadFile">📁 파일 전송</button>
+        </div>
+        <div id="chat-section">
+            <div id="chat-messages">
+                <!-- 채팅 메시지가 표시됩니다 -->
+            </div>
+            <div id="chat-input">
+                <input type="text" id="messageInput" placeholder="메시지 입력">
+                <button id="sendMessage">전송</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const socket = io("http://localhost:3000");
+
+const avatarGrid = document.getElementById("avatar-grid");
+const chatMessages = document.getElementById("chat-messages");
+const messageInput = document.getElementById("messageInput");
+const sendMessageButton = document.getElementById("sendMessage");
+const toggleMicButton = document.getElementById("toggleMic");
+const toggleVideoButton = document.getElementById("toggleVideo");
+const shareScreenButton = document.getElementById("shareScreen");
+const uploadFileButton = document.getElementById("uploadFile");
+const leaveRoomButton = document.getElementById("leaveRoom");
+
+let isMicrophoneOn = false;
+let isVideoOn = false;
+
+// 참가자 데이터 (10명)
+const participants = [
+    { name: "User 1" },
+    { name: "User 2" },
+    { name: "User 3" },
+    { name: "User 4" },
+    { name: "User 5" },
+    { name: "User 6" },
+    { name: "User 7" },
+    { name: "User 8" },
+    { name: "User 9" },
+    { name: "User 10" },
+];
+
+// 참가자 렌더링
+participants.forEach((participant) => {
+    const tile = document.createElement("div");
+    tile.classList.add("avatar-tile");
+
+    const videoElement = document.createElement("video");
+    videoElement.autoplay = true;
+    videoElement.muted = true; // 자기 자신은 항상 음소거
+    videoElement.setAttribute("playsinline", "");
+
+    const userName = document.createElement("div");
+    userName.classList.add("user-name");
+    userName.textContent = participant.name;
+
+    tile.appendChild(videoElement);
+    tile.appendChild(userName);
+    avatarGrid.appendChild(tile);
+});
+
+// 마이크 토글
+toggleMicButton.addEventListener("click", () => {
+    isMicrophoneOn = !isMicrophoneOn;
+    toggleMicButton.textContent = isMicrophoneOn ? "🎙️ 마이크 끄기" : "🎙️ 마이크 켜기";
+    // 마이크 활성화/비활성화 처리 추가
+});
+
+// 비디오 토글
+toggleVideoButton.addEventListener("click", () => {
+    isVideoOn = !isVideoOn;
+    toggleVideoButton.textContent = isVideoOn ? "📹 비디오 끄기" : "📹 비디오 켜기";
+    const videos = document.querySelectorAll("video");
+    videos.forEach((video) => {
+        video.style.display = isVideoOn ? "block" : "none";
+    });
+});
+
+// 화면 공유
+shareScreenButton.addEventListener("click", () => {
+    alert("화면 공유 기능은 아직 구현되지 않았습니다!");
+});
+
+// 파일 업로드
+uploadFileButton.addEventListener("click", () => {
+    alert("파일 업로드 기능은 아직 구현되지 않았습니다!");
+});
+
+// 채팅방 나가기
+leaveRoomButton.addEventListener("click", () => {
+    alert("채팅방을 나갑니다.");
+    window.location.href = "/";
+});
+
+// 메시지 전송
+sendMessageButton.addEventListener("click", () => {
+    const message = messageInput.value.trim();
+    if (message) {
+        socket.emit("sendMessage", { text: message });
+        messageInput.value = "";
+    }
+});
+
+// 메시지 수신
+socket.on("message", (data) => {
+    const messageElement = document.createElement("div");
+    messageElement.textContent = `${data.user}: ${data.text}`;
+    chatMessages.appendChild(messageElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+});
+
+    </script>
+
+</body>
+</html>

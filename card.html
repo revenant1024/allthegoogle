@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홈 화면</title>
+    <style>
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            width: 300px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 15px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-category {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container" id="card-container">
+        <!-- 카드 뉴스가 여기에 동적으로 추가됩니다 -->
+    </div>
+
+    <script>
+        // 더미 데이터
+        const dummyData = [
+            {
+                image: "https://via.placeholder.com/300x150", // 임시 이미지 URL
+                title: "AI 혁신의 시작",
+                category: "AI",
+                content: "AI 기술이 우리의 삶을 혁신하고 있습니다. 더 많은 정보를 확인하세요."
+            },
+            {
+                image: "https://via.placeholder.com/300x150",
+                title: "취업 성공 비결",
+                category: "취업",
+                content: "취업을 준비하는 사람들에게 도움이 될 팁과 전략을 소개합니다."
+            },
+            {
+                image: "https://via.placeholder.com/300x150",
+                title: "창업 아이디어",
+                category: "창업",
+                content: "새로운 비즈니스를 시작하기 위한 창업 아이디어를 탐구하세요."
+            }
+        ];
+    
+        // 데이터를 카드로 렌더링하는 함수
+        function renderCards(data) {
+            const container = document.getElementById('card-container');
+            container.innerHTML = ''; // 기존 내용을 초기화
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${item.image || 'placeholder.jpg'}" alt="${item.title}">
+                    <div class="card-content">
+                        <div class="card-title">${item.title}</div>
+                        <div class="card-category">${item.category}</div>
+                        <div class="card-text">${item.content}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+    
+        // 페이지 로드 시 데이터 불러오기
+        window.onload = () => {
+            renderCards(dummyData); // 서버 대신 더미 데이터를 렌더링
+        };
+    </script>
+    
+</body>
+</html>
